@@ -56,42 +56,51 @@ function buildGrid(longest) {
 }
 
 canvas.addEventListener('mousemove', (e) => {
-    // console.log(e)
+    // stores the current coordinates of the pointer 
     const mousePos = {
         x: e.clientX - canvas.offsetLeft,
         y: e.clientY - canvas.offsetTop
     };
 
-    let gridX = Math.floor(mousePos.x / squareSize);
-    let gridY = Math.floor(mousePos.y / squareSize);
+    // to calculate on which corresponding row and column the pointer is hovering.
+    let row = Math.floor(mousePos.x / squareSize) * squareSize;
+    let column = Math.floor(mousePos.y / squareSize) * squareSize;
 
-    // console.log('gridX, ', gridX)
-    // console.log('gridY, ', gridY)
-
-    let testX = gridY * squareSize; 
-    let testY = gridX * squareSize;
-
-    squares.filter(function (entry) {
-        if (entry.xPos == testX && entry.yPos == testY) {
+    // compares mouse position with the coordinates of stored squares and changes opacity if there's a match.
+    squares.filter(function (square) {
+        if (square.xPos == column && square.yPos == row) {
             // entry.color = `rgb(${random(255)}, ${random(255)}, ${random(255)}, ${opacity(0)})`;
-            entry.color = `rgb(0,0,0, ${opacity(0)})`;
-
-            updateCanvas(entry)
+            square.color = `rgb(0,0,0, ${opacity(0)})`;
+            updateCanvas(square)
         } 
     })
 })
 
+// redraws the canvas with the update values.
 function updateCanvas(square) {
     ctx.fillRect(square.yPos, square.xPos, square.xSize, square.ySize)
     ctx.fillStyle = square.color;
-    // this is where you redraw the canvas with different color? 
 }
 
-function random(max) {
-    return Math.floor(Math.random() * Math.floor(max))
-}
-
+// this returns an increased opacity value on mousehover.
 function opacity(opacity) {
     return opacity ? (parseFloat(opacity) + 0.01) : 0.02;
 }
+
+// function random(max) {
+//     return Math.floor(Math.random() * Math.floor(max))
+// }
+
+
+
+/*
+    - implement toolbar.
+    - adjust square size (without losing current drawing).
+    - screenshot -> save current drawing.
+    - switch to eraser.
+    - switch to different colours (on hover).
+    - decrease or increase opacity strength.
+    - it should also work on touch events. 
+    - redraw canvas on browser resize.
+*/
   
