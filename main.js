@@ -35,24 +35,22 @@ function setupCanvasGrid() {
     let amountOfColumns = width / squareSize;
     console.log('amountOfColumns ', amountOfColumns)
 
-    columnsLongerThanRows(amountOfRows, amountOfColumns, amountOfSquares)
+    let longest = amountOfColumns > amountOfRows ? amountOfColumns : amountOfRows;
+
+    let difference = (longest - amountOfRows > 1) ? longest - amountOfRows : 0; 
+
+    let squaresPerRow = Math.floor(amountOfSquares / (longest - difference));
+
+    buildGrid(Math.floor(longest + difference), squaresPerRow, amountOfRows)
 
 }
-
-// since there is a difference between rows and height it's important to know the longest one to fill the whole screen. 
-function columnsLongerThanRows(rows, columns, amountOfSquares) {
-    columns > rows ? buildGrid(Math.floor(columns), amountOfSquares) : buildGrid(Math.floor(rows), amountOfSquares);
-}
-
 
 /* 
     This function places squares on the correct position in the canvas element, using the previous calculated values.
     It then pushes all squares (with their properties) in the squares array, so I can use them later on for the mousemove function.
 */
-function buildGrid(longest, amountOfSquares) {
-    let squaresPerRow = Math.floor(amountOfSquares / longest);
-    // console.log(amountOfSquares / longest)
-
+function buildGrid(longest, squaresPerRow, amountOfRows) {
+    console.log(longest)
     for (let i = longest; i >= 0; i--) {
         for (let x = squaresPerRow; x >= 0; x--) {
             squares.push({
