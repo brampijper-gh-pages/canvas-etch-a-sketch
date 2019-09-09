@@ -16,27 +16,18 @@ function setupCanvasGrid() {
     canvas.width = width;
     canvas.height = height;
 
-    const amountOfPixels = width * height;
-    const amountOfSquares = amountOfPixels / (squareSize * squareSize);
+    // const amountOfPixels = width * height;
+    // const amountOfSquares = amountOfPixels / (squareSize * squareSize);
 
-    // Squares in row and columns
-    const rows = height / squareSize;
-    const columns = width / squareSize;
+    const squaresInRow = Math.floor(height / squareSize);
+    const squaresInColumn = Math.floor(width / squareSize);
 
-    let longestRowOrColumn = columns > rows ? columns : rows; 
-
-    buildGrid(Math.floor(longestRowOrColumn));
-
+    buildGrid(squaresInRow, squaresInColumn)
 }
 
-
-/* 
-    This function places squares on the correct position in the canvas element, using the previous calculated values.
-    It then pushes all squares (with their properties) in the squares array, so I can use them later on for the mousemove function.
-*/
-function buildGrid(longest) {
-    for (let i = longest; i >= 0; i--) {
-        for (let x = longest; x >= 0; x--) {
+function buildGrid(squaresInrows, squaresIncolumns) {
+    for (let i = squaresInrows; i >= 0; i--) {
+        for (let x = squaresIncolumns; x >= 0; x--) {
             squares.push({
                 xPos: squareSize * i,
                 yPos: squareSize * x,
