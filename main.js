@@ -5,6 +5,8 @@ let ctx = canvas.getContext('2d');
 let squareSize = 100;
 let squares = [];
 
+let eraserActive = false;
+
 window.addEventListener("resize", setupCanvasGrid)
 
 function setupCanvasGrid() {
@@ -47,8 +49,8 @@ canvas.addEventListener('mousemove', (e) => {
     };
 
     // to calculate on which corresponding row and column the pointer is hovering.
-    let column = Math.floor(mousePos.x / squareSize) * squareSize;
-    let row = Math.floor(mousePos.y / squareSize) * squareSize;
+    const column = Math.floor(mousePos.x / squareSize) * squareSize;
+    const row = Math.floor(mousePos.y / squareSize) * squareSize;
 
     // compares mouse position with the coordinates of stored squares and changes opacity if there's a match.
     squares.filter(function (square) {
@@ -67,14 +69,17 @@ function updateCanvas(square) {
 
 // this returns an increased opacity value on mousehover.
 function opacity(opacity) {
-    return opacity ? (parseFloat(opacity) + 0.01) : 0.02;
+    if(!eraserActive) return parseFloat(opacity) + 0.1;
+    else return parseFloat(opacity) - 0.1;
 }
 
 document.addEventListener('keydown', (event) => {
     if (event.key == 'e') {
+        eraserActive = true
         console.log('switch to eraser')
     }
     if (event.key == 'p') {
+        eraserActive = false
         console.log('switch to paintbrush')
     }
 })
