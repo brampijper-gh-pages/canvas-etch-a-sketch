@@ -3,11 +3,7 @@ let ctx = canvas.getContext('2d');
 
 // square dimensions
 let squareSize = 100;
-
 let squares = [];
-
-let eraseMode = false;
-let operator = '+';
 
 window.addEventListener("resize", setupCanvasGrid)
 
@@ -88,11 +84,9 @@ function opacity(opacity) {
 
 document.addEventListener('keydown', (event) => {
     if (event.key == 'e') {
-        eraseMode = true;
         console.log('switch to eraser')
     }
     if (event.key == 'p') {
-        eraseMode = false;
         console.log('switch to paintbrush')
     }
 })
