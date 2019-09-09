@@ -6,6 +6,9 @@ let squareSize = 100;
 
 let squares = [];
 
+let eraseMode = false;
+let operator = '+';
+
 window.addEventListener("resize", setupCanvasGrid)
 
 function setupCanvasGrid() {
@@ -20,32 +23,27 @@ function setupCanvasGrid() {
     let amountOfPixels = width * height;
     let amountOfSquares = amountOfPixels / (squareSize * squareSize);
 
+    console.log(amountOfSquares)
+
     // Squares in row and columns
-    let amountOfRows = height / squareSize;
-    let amountOfColumns = width / squareSize;
+    let rows = height / squareSize;
+    let columns = width / squareSize;
 
-    isColumnOrRowLongest(amountOfColumns, amountOfRows, amountOfSquares)
+    let longestRowOrColumn = columns > rows ? columns : rows; 
 
-}
-
-function isColumnOrRowLongest(columns, rows, amountOfSquares) {
-    if(columns > rows) {
-        let squaresPerColumn = Math.floor(amountOfSquares / columns) 
-        buildGrid(Math.floor(columns), squaresPerColumn)
-    }
-
-    let squaresPerRow = Math.floor(amountOfSquares / rows)
-    buildGrid(Math.floor(rows), squaresPerRow)
+    buildGrid(Math.floor(longestRowOrColumn));
 
 }
+
 
 /* 
     This function places squares on the correct position in the canvas element, using the previous calculated values.
     It then pushes all squares (with their properties) in the squares array, so I can use them later on for the mousemove function.
 */
-function buildGrid(longest, squaresPerRow) {
+function buildGrid(longest) {
+    console.log('longest ', longest)
     for (let i = longest; i >= 0; i--) {
-        for (let x = squaresPerRow; x >= 0; x--) {
+        for (let x = longest; x >= 0; x--) {
             squares.push({
                 xPos: squareSize * i,
                 yPos: squareSize * x,
@@ -89,12 +87,21 @@ function opacity(opacity) {
 }
 
 document.addEventListener('keydown', (event) => {
-    if (event.key == 'e') { 
+    if (event.key == 'e') {
+        eraseMode = true;
         console.log('switch to eraser')
+    }
+    if (event.key == 'p') {
+        eraseMode = false;
+        console.log('switch to paintbrush')
     }
 })
 
 /*
-    
+    - switch to eraser
+        - Opacity should decrease instead of increase on mouseover.
+        - the cursor should change to a `gum`.
+        - The user can switch back to `painting` mode again.
+        - The opacity should not be lower than 0. 
 */
   
