@@ -5,7 +5,7 @@ let ctx = canvas.getContext('2d');
 let squareSize = 100;
 let squares = [];
 
-let eraserActive = false;
+let painting = true;
 
 window.addEventListener("resize", setupCanvasGrid)
 
@@ -35,7 +35,8 @@ function buildGrid(squaresInrows, squaresIncolumns) {
                 yPos: squareSize * x,
                 xSize: squareSize,
                 ySize: squareSize,
-                color: 'rgb(0,0,0,0)'
+                color: 'rgb(0,0,0,0)',
+                opacity: 0
             })
         }
     }
@@ -55,7 +56,7 @@ canvas.addEventListener('mousemove', (e) => {
     // compares mouse position with the coordinates of stored squares and changes opacity if there's a match.
     squares.filter(function (square) {
         if (square.xPos == row && square.yPos == column) {
-            square.color = `rgb(0,0,0, ${opacity(0)})`;
+            square.color = `rgb(0,0,0, ${opacity(square)})`;
             updateCanvas(square)
         } 
     })
@@ -63,32 +64,35 @@ canvas.addEventListener('mousemove', (e) => {
 
 // redraws the canvas with the updated values.
 function updateCanvas(square) {
-    ctx.fillRect(square.yPos, square.xPos, square.xSize, square.ySize)
+    ctx.clearRect(square.yPos, square.xPos, square.xSize, square.ySize);
     ctx.fillStyle = square.color;
+    ctx.fillRect(square.yPos, square.xPos, square.xSize, square.ySize)
 }
 
-// this returns an increased opacity value on mousehover.
-function opacity(opacity) {
-    if(!eraserActive) return parseFloat(opacity) + 0.1;
-    else return parseFloat(opacity) - 0.1;
+function opacity(square) {
+    if (painting && square.opacity <= 1) {
+        square.opacity += 0.01;
+    } 
+    else if (square.opacity >= 0) {
+        square.opacity -= 0.01
+    }
+    return square.opacity;
+
 }
 
 document.addEventListener('keydown', (event) => {
     if (event.key == 'e') {
-        eraserActive = true
+        painting = false;
         console.log('switch to eraser')
     }
     if (event.key == 'p') {
-        eraserActive = false
+        painting = true
         console.log('switch to paintbrush')
     }
 })
 
 /*
     - switch to eraser
-        - Opacity should decrease instead of increase on mouseover.
         - the cursor should change to a `gum`.
-        - The user can switch back to `painting` mode again.
-        - The opacity should not be lower than 0. 
 */
   
