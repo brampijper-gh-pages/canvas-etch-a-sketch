@@ -1,6 +1,6 @@
 let canvas = document.getElementById('canvas-grid');
 let ctx = canvas.getContext('2d');
-
+let cursorStyle = document.body.style.cursor;
 // square dimensions
 let squareSize = 100;
 let squares = [];
@@ -83,6 +83,7 @@ function opacity(square) {
 document.addEventListener('keydown', (event) => {
     if (event.key == 'e') {
         painting = false;
+        cursorStyle = "url('http://wiki-devel.sugarlabs.org/images/e/e2/Arrow.cur'), auto"
         console.log('switch to eraser')
     }
     if (event.key == 'p') {
@@ -90,9 +91,3 @@ document.addEventListener('keydown', (event) => {
         console.log('switch to paintbrush')
     }
 })
-
-/*
-    - switch to eraser
-        - the cursor should change to a `gum`.
-*/
-  
